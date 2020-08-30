@@ -17,6 +17,40 @@ namespace mvvmTest.ViewModel
         private Phone selectedPhone;
 
         public ObservableCollection<Phone> Phones { get; set; }
+
+        private RelayCommand addCommand;
+        public RelayCommand AddCommand
+        {
+            get
+            {
+                return addCommand ??
+                    (addCommand = new RelayCommand(obj =>
+                    {
+                        Phone phone = new Phone();
+                        Phones.Insert(0, phone);
+                        SelectedPhone = phone;
+                    }));
+            }
+        }
+
+        private RelayCommand removeCommand;
+        public RelayCommand RemoveCommand
+        {
+            get
+            {
+                return removeCommand ??
+                    (removeCommand = new RelayCommand(obj =>
+                    {
+                        Phone phone = obj as Phone;
+                        if (phone != null)
+                        {
+                            Phones.Remove(phone);
+                        }
+                    },
+                    (obj) => Phones.Count > 0));
+            }
+        }
+
         public Phone SelectedPhone
         {
             get => selectedPhone;
